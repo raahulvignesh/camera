@@ -4,6 +4,7 @@ package com.example.rahul.deltatask2;
 import android.app.Activity;
 
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ public class Adapterset extends ArrayAdapter{
         this.images = images;
     }
 
+    @NonNull
     @Override
     public View getView(int position,  View convertView,  ViewGroup parent) {
 
@@ -41,11 +43,12 @@ public class Adapterset extends ArrayAdapter{
         Bitmap bitmap = null;
         try {
             bitmap = ImageLoader.init().from(images.get(position)).getBitmap();
-        } catch (FileNotFoundException e) {
+            imageView.setImageBitmap(bitmap);
+        } catch (Exception e) {
             Toast.makeText(getContext(),"done",Toast.LENGTH_LONG).show();
 
         }
-        imageView.setImageBitmap(bitmap);
+
         return rowview;
     }
 }

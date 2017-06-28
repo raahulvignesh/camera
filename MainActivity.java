@@ -22,11 +22,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     ArrayList<String> imagelist;
+    ListView listView;
     ImageView image;
     Adapterset adapterset;
     CameraPhoto cameraPhoto;
     GalleryPhoto galleryPhoto;
-    String camerapath;
     ImageView imagegallery;
     final int CAMERA_REQUEST = 1130;
     final int GALLERY_REQUEST = 1220;
@@ -37,12 +37,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        adapterset = new Adapterset(this, imagelist);
-        ListView listView = (ListView) findViewById(R.id.listview);
-        listView.setAdapter(adapterset);
-        camera();
+
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        imagelist = new ArrayList<String>();
+        listView = (ListView) findViewById(R.id.listview);
+        camera();
+    }
 
     public void camera() {
         image = (ImageView) findViewById(R.id.imageView);
@@ -83,18 +87,20 @@ public class MainActivity extends AppCompatActivity {
 
         if (resultCode == RESULT_OK) {
             if (requestCode == CAMERA_REQUEST) {
-                camerapath = cameraPhoto.getPhotoPath();
+                String camerapath = cameraPhoto.getPhotoPath();
                 imagelist.add(camerapath);
-                adapterset.notifyDataSetChanged();
+                adapterset = new Adapterset(this,imagelist);
+                listView.setAdapter(adapterset);
 
             }
-        } else if (resultCode == RESULT_OK) {
-            if (requestCode== GALLERY_REQUEST) {
+
+
+            else if (requestCode== GALLERY_REQUEST) {
                 galleryPhoto.setPhotoUri(data.getData());
                 String photoPath = galleryPhoto.getPath();
                 imagelist.add(photoPath);
-                adapterset.notifyDataSetChanged();
-
+                adapterset= new Adapterset(this,imagelist);
+                listView.setAdapter(adapterset);
             }
 
 
